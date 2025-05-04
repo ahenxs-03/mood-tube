@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MoodTube</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <!-- Header Section -->
+  <header id="header">
+    <div class="logo">MoodTube</div>
+    <input id="searchInput" type="text" placeholder="Search videos..." />
+    <button id="searchButton" class="search-button">Search</button>
+  </header>
+
+  <!-- Sidebar Section -->
+  <aside id="sidebar">
+    <button class="sidebar-button">Home</button>
+    <button class="sidebar-button">Trending</button>
+    <button class="sidebar-button">Library</button>
+    <button class="sidebar-button">Account</button>
+  </aside>
+
+  <!-- Main Content -->
+  <main id="mainContent">
+    <!-- Mood Buttons Section -->
+    <section id="moodButtonsSection">
+      <h1>Select Your Mood</h1>
+      <div class="mood-buttons">
+        <button class="mood-button" data-mood="education">📚 Education</button>
+        <button class="mood-button" data-mood="movie">🎬 Movies</button>
+        <button class="mood-button" data-mood="tech">💻 Tech</button>
+        <button class="mood-button" data-mood="random">🎲 Random</button>
+      </div>
+    </section>
+
+    <!-- Videos Section -->
+    <section id="videosSection" style="display: none;">
+      <button id="backButton" class="back-button">⬅ Back</button>
+      <div id="demoVideos" class="video-grid"></div>
+    </section>
+  </main>
+
+  <script>
+    // Mock Video Data
+    const videos = {
+      education: [
+        { title: "Learn JavaScript", views: "2.3M", rating: 4.5, thumbnail: "https://via.placeholder.com/300x200?text=Education+1" },
+        { title: "Science Explained", views: "1.8M", rating: 4.7, thumbnail: "https://via.placeholder.com/300x200?text=Education+2" },
+      ],
+      movie: [
+        { title: "Top 10 Movies", views: "1.5M", rating: 4.6, thumbnail: "https://via.placeholder.com/300x200?text=Movie+1" },
+        { title: "Movie Reviews", views: "1.1M", rating: 4.1, thumbnail: "https://via.placeholder.com/300x200?text=Movie+2" },
+      ],
+      tech: [
+        { title: "Latest Gadgets", views: "2.8M", rating: 4.8, thumbnail: "https://via.placeholder.com/300x200?text=Tech+1" },
+        { title: "AI Trends", views: "2.1M", rating: 4.6, thumbnail: "https://via.placeholder.com/300x200?text=Tech+2" },
+      ],
+      random: [
+        { title: "Funny Cats", views: "3.2M", rating: 4.9, thumbnail: "https://via.placeholder.com/300x200?text=Random+1" },
+        { title: "Random Facts", views: "1.9M", rating: 4.4, thumbnail: "https://via.placeholder.com/300x200?text=Random+2" },
+      ],
+    };
+
+    // DOM Elements
+    const demoVideosSection = document.getElementById("demoVideos");
+    const moodButtons = document.querySelectorAll(".mood-button");
+    const moodButtonsSection = document.getElementById("moodButtonsSection");
+    const videosSection = document.getElementById("videosSection");
+    const backButton = document.getElementById("backButton");
+
+    // Populate Videos
+    function loadVideos(category) {
+      demoVideosSection.innerHTML = "";
+      const categoryVideos = videos[category];
+      categoryVideos
+        .sort((a, b) => b.rating - a.rating) // Sort by rating
+        .forEach((video) => {
+          const videoCard = document.createElement("div");
+          videoCard.className = "video-card";
+          videoCard.innerHTML = `
+            <img src="${video.thumbnail}" alt="${video.title}">
+            <div class="info">
+              <h3>${video.title}</h3>
+              <p>${video.views} views</p>
+              <p>AI Generated Ratings by Comment Feedbacks: ${"★".repeat(Math.round(video.rating))}${"☆".repeat(5 - Math.round(video.rating))}</p>
+            </div>
+          `;
+          demoVideosSection.appendChild(videoCard);
+        });
+
+      // Show Videos Section and Hide Mood Buttons Section
+      moodButtonsSection.style.display = "none";
+      videosSection.style.display = "block";
+    }
+
+    // Handle Mood Buttons
+    moodButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const mood = button.dataset.mood;
+        loadVideos(mood);
+      });
+    });
+
+    // Handle Back Button
+    backButton.addEventListener("click", () => {
+      videosSection.style.display = "none";
+      moodButtonsSection.style.display = "block";
+    });
+  </script>
+</body>
+
+</html>
